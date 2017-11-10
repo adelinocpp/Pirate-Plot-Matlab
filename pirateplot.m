@@ -42,7 +42,7 @@ elseif (~ischar(vLabel{1}))
     return,
 end,
 
-if (nargin < 3)
+if ((nargin < 3) || isempty(ici))
     ici = 0.95;
 end;
 if (nargin < 4)
@@ -99,7 +99,7 @@ for i = 1:nData
     sx = std(x);
     yDens = linspace(ix - sx, mx + sx,numDens);
     
-    xDens = ksdensity(x,yDens); %,'Bandwidth',0.2
+    xDens = ksdensity(x,yDens,'Kernel','triangle'); %,'Bandwidth',0.2
     xDens = 0.9*xDens./max(xDens);
     
     xDenFill{i} = [vec_X(i) - xDens, fliplr(vec_X(i) + xDens)];
@@ -115,8 +115,8 @@ end,
 
 
 
-idx = fix(linspace(1,size(Paleta,1),nData+1));
-vColor = Paleta(idx(1:(end-1)),:);
+idx = fix(linspace(1,size(Paleta,1),nData));
+vColor = Paleta(idx,:);
 figure(hPirate); 
 grid on;
 yLimMin = floor(yLimMax*10)/10;
@@ -124,11 +124,13 @@ yLimMax = ceil(yLimMax*10)/10;
 axis([xLimMin, xLimMax, -inf, +inf]);
 for i = 1:nData
     
-    vColorT = min(2*vColor(i,:),1);
+    vColorT = min(1.5*vColor(i,:),1);
     hold on, fillhandle = fill(xDenFill{i},yDenFill{i},vColorT);
-    set(fillhandle,'FaceAlpha',0.15,'EdgeAlpha',0.15);
+    set(fillhandle,'FaceAlpha',0.25,'EdgeAlpha',0.25);
+    %set(fillhandle,'FaceAlpha',0.25,'EdgeAlpha',0.15);
     
-    vColorT = [0,0,0];
+%     vColorT = [0,0,0];
+    vColorT = max(0.75*vColor(i,:),0);
     hold on, plot(vec_X(i) + cDens{i},cYDens{i},'-','LineWidth',0.5,'Color',vColorT);
     hold on, plot(vec_X(i) - cDens{i},cYDens{i},'-','LineWidth',0.5,'Color',vColorT);
         
@@ -139,10 +141,11 @@ for i = 1:nData
         'MarkerFaceColor',vColorT, 'MarkerEdgeColor',[0,0,0],...
         'MarkerFaceAlpha',0.15,'MarkerEdgeAlpha',0.15);
     
-    vColorT = [0,0,0];
+    %vColorT = [0,0,0];
+    vColorT = vColor(i,:);
     xMed = [vec_X(i) - 0.8; vec_X(i) + 0.8];
     yMed = [cMean{i}; cMean{i}];
-    hold on, plot(xMed,yMed,'-','LineWidth',4,'Color',vColorT);
+    hold on, plot(xMed,yMed,'-','LineWidth',2,'Color',vColorT);
     
     xICMed = [vec_X(i) - 0.7; vec_X(i) - 0.7;...
               vec_X(i) + 0.7; vec_X(i) + 0.7];
