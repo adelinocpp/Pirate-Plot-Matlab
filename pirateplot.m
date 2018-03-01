@@ -12,6 +12,19 @@ function hPirate = pirateplot(xData,vLabel,ici,Paleta)
 %
 % URL: https://scholar.google.ch/citations?view_op=view_citation&hl=en&user=ThWbpDQAAAAJ&citation_for_view=ThWbpDQAAAAJ:dTyEYWd-f8wC
 %
+% Example (Forgive me. Legends are in portuguese)
+% xBruto = cell(2,1);
+% Origem = cell(2,1);
+%
+% xBruto{1} = 2*randn(30,1);
+% xBruto{2} = randn(22,1) + 4;
+
+% Origem{1} = 'Padrão';
+% Origem{2} = 'Questionado';
+
+% figure, pirateplot(xBruto,Origem,0.95);
+% title('Duração dos registros de áudio','FontSize',18);
+% ylabel('Duração [min]','FontSize',14);
 %
 % Brasil, julho de 2017
 % Adelino P. Silva
